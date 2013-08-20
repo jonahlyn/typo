@@ -37,15 +37,34 @@ Given /^the blog is set up$/ do
   Blog.default.save!
   User.create!({:login => 'admin',
                 :password => 'aaaaaaaa',
-                :email => 'joe@snow.com',
+                :email => 'admin@jonahlyngilstrap.com',
                 :profile_id => 1,
                 :name => 'admin',
                 :state => 'active'})
+
+  User.create!({:login => 'joe',
+                :password => 'aaaaaaaa',
+                :email => 'joe@jonahlyngilstrap.com',
+                :profile_id => 2,
+                :name => 'joe',
+                :state => 'active'})
+
+  User.create!({:login => 'mary',
+                :password => 'aaaaaaaa',
+                :email => 'mary@jonahlyngilstrap.com',
+                :profile_id => 3,
+                :name => 'mary',
+                :state => 'active'})
+
+  Article.create!(:title => "An Article About Something", :author => "joe", :user_id => 2, :published => true)
+  Article.create!(:title => "An Article About the Same Thing", :author => "mary", :user_id => 3, :published => true)
+
+
 end
 
-And /^I am logged into the admin panel$/ do
+And /^I am logged into the admin panel as "(.*)"$/ do |user_name|
   visit '/accounts/login'
-  fill_in 'user_login', :with => 'admin'
+  fill_in 'user_login', :with => user_name
   fill_in 'user_password', :with => 'aaaaaaaa'
   click_button 'Login'
   if page.respond_to? :should
@@ -274,5 +293,6 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
 end
 
 Then /^show me the page$/ do
-  save_and_open_page
+  #save_and_open_page
+  puts page.body.inspect
 end
