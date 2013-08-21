@@ -15,8 +15,9 @@ Feature: Merge Articles
   Scenario: I should see the Merge Articles form
     Given I am logged into the admin panel as "admin"
     When I go to the manage articles page
-  	When I follow "An Article About Something"
+  	And I follow "An Article About Something"
   	Then I should see "Merge Articles"
+  	And I should see "Article ID"
 
   Scenario: If I am not an admin, I should not see the Merge Articles form
   	Given I am logged into the admin panel as "joe"
