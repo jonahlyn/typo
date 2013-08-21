@@ -12,17 +12,24 @@ Feature: Merge Articles
     Then I should see "An Article About Something"
     And I should see "An Article About the Same Thing"
     
-  Scenario: I should see the Merge Articles form
+  Scenario: When I edit an article, I should see the Merge Articles form
     Given I am logged into the admin panel as "admin"
     When I go to the manage articles page
   	And I follow "An Article About Something"
   	Then I should see "Merge Articles"
-  	And I should see "Article ID"
+  	And I should see an element "#merge_with"
 
   Scenario: If I am not an admin, I should not see the Merge Articles form
   	Given I am logged into the admin panel as "joe"
   	When I go to the manage articles page
     And I follow "An Article About Something"
     Then I should not see "Merge Articles"
+
+  Scenario: I should not see the Merge Articles form when I create a new article
+    Given I am logged into the admin panel as "admin"
+    When I go to the manage articles page
+    And I follow "New Article"
+    Then I should not see "Merge Articles"
+
 
 

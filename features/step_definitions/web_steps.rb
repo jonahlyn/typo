@@ -296,3 +296,10 @@ Then /^show me the page$/ do
   #save_and_open_page
   puts page.body.inspect
 end
+
+Then /^I should (not )?see an element "(.*?)"$/ do |negate, selector|
+  expect = negate ? :should_not : :should
+  page.send(expect, have_css(selector))
+end
+
+
