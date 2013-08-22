@@ -35,31 +35,6 @@ Given /^the blog is set up$/ do
   Blog.default.update_attributes!({:blog_name => 'Teh Blag',
                                    :base_url => 'http://localhost:3000'});
   Blog.default.save!
-  User.create!({:login => 'admin',
-                :password => 'aaaaaaaa',
-                :email => 'admin@jonahlyngilstrap.com',
-                :profile_id => 1,
-                :name => 'admin',
-                :state => 'active'})
-
-  User.create!({:login => 'joe',
-                :password => 'aaaaaaaa',
-                :email => 'joe@jonahlyngilstrap.com',
-                :profile_id => 2,
-                :name => 'joe',
-                :state => 'active'})
-
-  User.create!({:login => 'mary',
-                :password => 'aaaaaaaa',
-                :email => 'mary@jonahlyngilstrap.com',
-                :profile_id => 3,
-                :name => 'mary',
-                :state => 'active'})
-
-  Article.create!(:title => "An Article About Something", :author => "joe", :user_id => 2, :published => true)
-  Article.create!(:title => "An Article About the Same Thing", :author => "mary", :user_id => 3, :published => true)
-
-
 end
 
 And /^I am logged into the admin panel as "(.*)"$/ do |user_name|
