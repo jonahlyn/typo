@@ -420,28 +420,19 @@ class Article < Content
     return nil if other_article_id.nil? or other_article_id == self.id
 
     other_article = Article.find(other_article_id)
-    merged_article = Article.new(:title => self.title, 
-                                 :author => self.author, 
-                                 :user_id => self.user_id, 
-                                 :published => true, 
-                                 :body => (self.body || '') + ' ' + (other_article.body || ''))
+    merged_article = Article.new(self.attributes.except('guid','permalink'))
+    merged_article.body = (self.body || '') + ' ' + (other_article.body || '')
     merged_article.save
 
+    #re-assign comments
     self.comments.each do |comment|
-      comment.article_id = merged_article.id
-      comment.save
+      merged_article.comments << Comment.new(comment.attributes.except('article_id'))
     end
-
     other_article.comments.each do |comment|
-      comment.article_id = merged_article.id
-      comment.save
+      merged_article.comments << Comment.new(comment.attributes.except('article_id'))
     end
 
-    other_article.published = false
-    other_article.save
-
-    self.published = false
-    self.save
+    Article.destroy([self.id, other_article.id])
 
     return merged_article
   end
