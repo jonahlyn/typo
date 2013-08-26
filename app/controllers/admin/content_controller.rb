@@ -113,6 +113,23 @@ class Admin::ContentController < Admin::BaseController
     render :text => nil
   end
 
+
+  def merge
+    @article = Article.find(params[:id])
+
+    # Only admins can merge articles
+    unless @article.access_by? current_user
+      flash[:error] = _("Error, you are not allowed to perform this action")
+      redirect_to :action => 'edit', :id => @article.id
+      return
+    end
+
+    @merge = Article.find(params['merge_with'])
+    @merged_article = @article.merge_with(@merge.id)
+    redirect_to :action => 'edit', :id => @merged_article.id
+  end
+
+
   protected
 
   def get_fresh_or_existing_draft_for_article
@@ -240,4 +257,12 @@ class Admin::ContentController < Admin::BaseController
   def setup_resources
     @resources = Resource.by_created_at
   end
+
+
+
+
+
+
+
+
 end

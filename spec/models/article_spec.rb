@@ -630,5 +630,62 @@ describe Article do
     end
 
   end
+
+
+  describe "#merge_with" do
+
+    before do
+      #articles
+      @a = Factory.build(:article)
+      @a.title = "Original Article Title"
+      @a.body = "Original article body."
+      @a.save
+      @b = Factory.build(:article)
+      @b.body = "Second article body."
+      @b.save
+
+      #comments
+      @comment1 = Factory.build(:comment)
+      @comment2 = Factory.build(:comment)
+      @a.comments << @comment1
+      @a.save
+      @b.comments << @comment2
+      @b.save
+
+      @c = @a.merge_with(@b.id)
+    end
+
+    it "should return a third article object" do
+      @c.id.should_not == @a.id
+      @c.id.should_not == @b.id
+    end
+
+    it "should return an article with the title of the original article" do
+      @c.title.should == "Original Article Title"
+    end
+
+    it "should contain the text of both articles" do
+      @c.body.should include "Original article body"
+      @c.body.should include "Second article body"
+    end
+
+    it "should unpublish the original articles" do
+      @a.published.should == false
+      @b.reload
+      @b.published.should == false
+    end
+
+    it "should contain the comments from both articles" do
+      @a.comments.count == 0
+      @b.comments.count == 0
+
+      #Comment.where("article_id = ?", @c.id).count.should == 2
+    end
+
+  end
+
+
+
+
 end
 

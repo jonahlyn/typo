@@ -671,4 +671,29 @@ describe Admin::ContentController do
 
     end
   end
+
+
+  describe 'merge action' do
+
+    before do
+      Factory(:blog)
+      #TODO delete this after remove fixture
+      Profile.delete_all
+      @user = Factory(:user)
+      # @user.editor = 'simple'
+      # @user.save
+      @article = Factory(:article)
+    end
+
+    it 'should not merge for non-admins' do
+      request.session = { :user => @user.id }
+      post :merge, :id => @article.id
+      response.should_not redirect_to(:action => 'index')
+    end
+
+  end
+
+
+
+
 end

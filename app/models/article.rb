@@ -416,6 +416,37 @@ class Article < Content
     user.admin? || user_id == user.id
   end
 
+  def merge_with(other_article_id = nil)
+    return nil if other_article_id.nil? or other_article_id == self.id
+
+    other_article = Article.find(other_article_id)
+    merged_article = Article.new(:title => self.title, 
+                                 :author => self.author, 
+                                 :user_id => self.user_id, 
+                                 :published => true, 
+                                 :body => (self.body || '') + ' ' + (other_article.body || ''))
+    merged_article.save
+
+    self.comments.each do |comment|
+      comment.article_id = merged_article.id
+      comment.save
+    end
+
+    other_article.comments.each do |comment|
+      comment.article_id = merged_article.id
+      comment.save
+    end
+
+    other_article.published = false
+    other_article.save
+
+    self.published = false
+    self.save
+
+    return merged_article
+  end
+
+
   protected
 
   def set_published_at
@@ -466,4 +497,5 @@ class Article < Content
     to = to - 1 # pull off 1 second so we don't overlap onto the next day
     return from..to
   end
+
 end

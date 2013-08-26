@@ -13,7 +13,7 @@ Feature: Merge Articles
     
     And the following users exist:
     | login | password | email                      | profile_id | name   | state  |
-    | admin | aaaaaaaa | admin@jonahlyngilstrap.com | 1          | admin  | active |
+    #| admin | aaaaaaaa | admin@jonahlyngilstrap.com | 1          | admin  | active |
     | joe   | aaaaaaaa | joe@jonahlyngilstrap.com   | 2          | joe    | active |
     | mary  | aaaaaaaa | mary@jonahlyngilstrap.com  | 3          | mary   | active |
 
@@ -46,10 +46,10 @@ Feature: Merge Articles
     Given I am logged into the admin panel as "admin"
     When I go to the manage articles page
     And I follow "An Article About Something"
-    And I fill in "merge_with" with "2"
+    And I fill in "merge_with" with the id of the "An Article About the Same Thing" article
     And I press "Merge"
-    Then I should see "An Article About Something"
-    And I should see "Something text"
+    #Then I should see "An Article About Something"
+    Then I should see "Something text"
     And I should see "Same thing text"
 
 
