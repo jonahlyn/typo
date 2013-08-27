@@ -646,11 +646,11 @@ describe Article do
 
       #comments
       @comment1 = Factory.build(:comment)
+      @comment1.save
       @comment2 = Factory.build(:comment)
+      @comment2.save
       @a.comments << @comment1
-      @a.save
       @b.comments << @comment2
-      @b.save
 
       @c = @a.merge_with(@b.id)
     end

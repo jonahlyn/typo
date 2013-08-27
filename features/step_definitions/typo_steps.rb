@@ -26,6 +26,11 @@ And /^I am logged into the admin panel as "(.*)"$/ do |user_name|
   end
 end
 
+When /^(?:|I )fill in "([^"]*)" with the id of the "([^"]*)" article$/ do |field, article_title|
+  article = Article.where("title = ?", article_title).first
+  fill_in(field, :with => article.id)
+end
+
 Then /^I should (not )?see an element "(.*?)"$/ do |negate, selector|
   expect = negate ? :should_not : :should
   page.send(expect, have_css(selector))
@@ -36,7 +41,3 @@ Then /^show me the page$/ do
   puts page.body.inspect
 end
 
-When /^(?:|I )fill in "([^"]*)" with the id of the "([^"]*)" article$/ do |field, article_title|
-  article = Article.where("title = ?", article_title).first
-  fill_in(field, :with => article.id)
-end

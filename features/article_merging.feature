@@ -6,16 +6,16 @@ Feature: Merge Articles
   Background: The blog is set up
   	Given the blog is set up
 
-    And the following articles exist:
-    | id | title                           | author | user_id | published | body            |
-    | 1  | An Article About Something      | joe    | 2       | true      | Something text  |
-    | 2  | An Article About the Same Thing | mary   | 3       | true      | Same thing text |
-    
     And the following users exist:
     | login | password | email                      | profile_id | name   | state  |
-    #| admin | aaaaaaaa | admin@jonahlyngilstrap.com | 1          | admin  | active |
+  # | admin | aaaaaaaa | admin@jonahlyngilstrap.com | 1          | admin  | active |
     | joe   | aaaaaaaa | joe@jonahlyngilstrap.com   | 2          | joe    | active |
     | mary  | aaaaaaaa | mary@jonahlyngilstrap.com  | 3          | mary   | active |
+
+    And the following articles exist:
+    | id | title                           | author | user_id | published | body            | allow_comments |
+    | 1  | An Article About Something      | joe    | 2       | true      | Something text  | true           |
+    | 2  | An Article About the Same Thing | mary   | 3       | true      | Same thing text | true           |
 
   Scenario: I should see both articles on the manage articles page
     Given I am logged into the admin panel as "admin"
